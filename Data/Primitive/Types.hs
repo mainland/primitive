@@ -1,4 +1,4 @@
-{-# LANGUAGE UnboxedTuples, MagicHash, DeriveDataTypeable #-}
+{-# LANGUAGE CPP, UnboxedTuples, MagicHash, DeriveDataTypeable #-}
 
 -- |
 -- Module      : Data.Primitive.Types
@@ -20,6 +20,9 @@ module Data.Primitive.Types (
 import Control.Monad.Primitive
 import Data.Primitive.MachDeps
 import Data.Primitive.Internal.Operations
+#if defined(__GLASGOW_HASKELL_LLVM__)
+import Data.Primitive.Multi.Types
+#endif /* defined(__GLASGOW_HASKELL_LLVM__) */
 
 import GHC.Base (
     unsafeCoerce#,
@@ -107,8 +110,8 @@ class Prim a where
 
 #define derivePrim(ty, ctr, sz, align, idx_arr, rd_arr, wr_arr, set_arr, idx_addr, rd_addr, wr_addr, set_addr) \
 instance Prim ty where {                                        \
-  sizeOf# _ = unI# sz                                           \
-; alignment# _ = unI# align                                     \
+  sizeOf# _ = unI# (sz)                                         \
+; alignment# _ = unI# (align)                                   \
 ; indexByteArray# arr# i# = ctr (idx_arr arr# i#)               \
 ; readByteArray#  arr# i# s# = case rd_arr arr# i# s# of        \
                         { (# s1#, x# #) -> (# s1#, ctr x# #) }  \
@@ -182,3 +185,17 @@ derivePrim(Addr, Addr, sIZEOF_PTR, aLIGNMENT_PTR,
            indexAddrArray#, readAddrArray#, writeAddrArray#, setAddrArray#,
            indexAddrOffAddr#, readAddrOffAddr#, writeAddrOffAddr#, setAddrOffAddr#)
 
+#if defined(__GLASGOW_HASKELL_LLVM__)
+derivePrim(FloatX4, FX4#, 4*sIZEOF_FLOAT, 4*aLIGNMENT_FLOAT,
+           indexFloatX4Array#, readFloatX4Array#, writeFloatX4Array#, setFloatX4Array#,
+           indexFloatX4OffAddr#, readFloatX4OffAddr#, writeFloatX4OffAddr#, setFloatX4OffAddr#)
+derivePrim(DoubleX2, DX2#, 2*sIZEOF_DOUBLE, 2*aLIGNMENT_DOUBLE,
+           indexDoubleX2Array#, readDoubleX2Array#, writeDoubleX2Array#, setDoubleX2Array#,
+           indexDoubleX2OffAddr#, readDoubleX2OffAddr#, writeDoubleX2OffAddr#, setDoubleX2OffAddr#)
+derivePrim(Int32X4, I32X4#, 4*sIZEOF_INT32, 4*aLIGNMENT_INT32,
+           indexInt32X4Array#, readInt32X4Array#, writeInt32X4Array#, setInt32X4Array#,
+           indexInt32X4OffAddr#, readInt32X4OffAddr#, writeInt32X4OffAddr#, setInt32X4OffAddr#)
+derivePrim(Int64X2, I64X2#, 2*sIZEOF_INT64, 2*aLIGNMENT_INT64,
+           indexInt64X2Array#, readInt64X2Array#, writeInt64X2Array#, setInt64X2Array#,
+           indexInt64X2OffAddr#, readInt64X2OffAddr#, writeInt64X2OffAddr#, setInt64X2OffAddr#)
+#endif /* defined(__GLASGOW_HASKELL_LLVM__) */
