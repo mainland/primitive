@@ -1,4 +1,4 @@
-{-# LANGUAGE MagicHash, ForeignFunctionInterface, UnliftedFFITypes #-}
+{-# LANGUAGE CPP, MagicHash, ForeignFunctionInterface, UnliftedFFITypes #-}
 
 -- |
 -- Module      : Data.Primitive.Internal.Operations
@@ -23,10 +23,18 @@ module Data.Primitive.Internal.Operations (
   setWord64OffAddr#, setWordOffAddr#,
   setInt8OffAddr#, setInt16OffAddr#, setInt32OffAddr#,
   setInt64OffAddr#, setIntOffAddr#,
-  setAddrOffAddr#, setFloatOffAddr#, setDoubleOffAddr#, setWideCharOffAddr#
+  setAddrOffAddr#, setFloatOffAddr#, setDoubleOffAddr#, setWideCharOffAddr#,
+
+#if defined(__GLASGOW_HASKELL_LLVM__)
+  setFloatX4Array#, setDoubleX2Array#, setInt32X4Array#, setInt64X2Array#,
+  setFloatX4OffAddr#, setDoubleX2OffAddr#, setInt32X4OffAddr#, setInt64X2OffAddr#,
+#endif /* defined(__GLASGOW_HASKELL_LLVM__) */
 ) where
 
 import Data.Primitive.MachDeps (Word64_#, Int64_#)
+#if defined(__GLASGOW_HASKELL_LLVM__)
+import Data.Primitive.Multi.Types
+#endif /* defined(__GLASGOW_HASKELL_LLVM__) */
 import GHC.Prim
 
 foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Word8"
@@ -58,6 +66,17 @@ foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Double"
 foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Char"
   setWideCharArray# :: MutableByteArray# s -> Int# -> Int# -> Char# -> IO ()
 
+#if defined(__GLASGOW_HASKELL_LLVM__)
+foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_FloatX4"
+  setFloatX4Array# :: MutableByteArray# s -> Int# -> Int# -> FloatX4# -> IO ()
+foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_DoubleX2"
+  setDoubleX2Array# :: MutableByteArray# s -> Int# -> Int# -> DoubleX2# -> IO ()
+foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Int32X4"
+  setInt32X4Array# :: MutableByteArray# s -> Int# -> Int# -> Int32X4# -> IO ()
+foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Int64X2"
+  setInt64X2Array# :: MutableByteArray# s -> Int# -> Int# -> Int64X2# -> IO ()
+#endif /* defined(__GLASGOW_HASKELL_LLVM__) */
+
 foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Word8"
   setWord8OffAddr# :: Addr# -> Int# -> Int# -> Word# -> IO ()
 foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Word16"
@@ -87,3 +106,13 @@ foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Double"
 foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Char"
   setWideCharOffAddr# :: Addr# -> Int# -> Int# -> Char# -> IO ()
 
+#if defined(__GLASGOW_HASKELL_LLVM__)
+foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_FloatX4"
+  setFloatX4OffAddr# :: Addr# -> Int# -> Int# -> FloatX4# -> IO ()
+foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_DoubleX2"
+  setDoubleX2OffAddr# :: Addr# -> Int# -> Int# -> DoubleX2# -> IO ()
+foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Int32X4"
+  setInt32X4OffAddr# :: Addr# -> Int# -> Int# -> Int32X4# -> IO ()
+foreign import ccall unsafe "primitive-memops.h hsprimitive_memset_Int64X2"
+  setInt64X2OffAddr# :: Addr# -> Int# -> Int# -> Int64X2# -> IO ()
+#endif /* defined(__GLASGOW_HASKELL_LLVM__) */
