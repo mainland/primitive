@@ -50,3 +50,40 @@ MEMSET(Float, HsFloat)
 MEMSET(Double, HsDouble)
 MEMSET(Char, HsChar)
 
+#if defined(__SSE2__)
+void hsprimitive_memset_FloatX4 (__m128 *p, int off, int n, __m128 x)
+{
+    p += off;
+    while (n>0) {
+        *p++ = x;
+        --n;
+    }
+}
+
+void hsprimitive_memset_DoubleX2 (__m128d *p, int off, int n, __m128d x)
+{
+    p += off;
+    while (n>0) {
+        *p++ = x;
+        --n;
+    }
+}
+
+void hsprimitive_memset_Int32X4 (__m128i *p, int off, int n, __m128i x)
+{
+    p += off;
+    while (n>0) {
+        *p++ = x;
+        --n;
+    }
+}
+
+void hsprimitive_memset_Int64X2 (__m128i *p, int off, int n, __m128i x)
+{
+    p += off;
+    while (n>0) {
+        *p++ = x;
+        --n;
+    }
+}
+#endif /* defined(__SSE2__) */

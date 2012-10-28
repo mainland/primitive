@@ -37,6 +37,8 @@ Library
         Data.Primitive.ByteArray
         Data.Primitive.Addr
         Data.Primitive.MutVar
+        Data.Primitive.Multi
+        Data.Primitive.Multi.Types
 
   Other-Modules:
         Data.Primitive.Internal.Compat
