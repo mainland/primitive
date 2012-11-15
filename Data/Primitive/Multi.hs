@@ -33,7 +33,11 @@ module Data.Primitive.Multi (
     peekElemOffAsMulti,
     pokeElemOffAsMulti,
 
-    muncurry
+    muncurry,
+
+    prefetchPtrData,
+    prefetchForeignPtrData,
+    prefetchByteArrayData
  ) where
 
 import Control.Monad.Primitive
@@ -370,4 +374,16 @@ peekElemOffAsMulti (Ptr a#) i = readOffAddrAsMulti (Addr a#) i
 pokeElemOffAsMulti :: (MultiPrim a, PrimMonad m) => Ptr a -> Int -> Multi a -> m ()
 {-# INLINE pokeElemOffAsMulti #-}
 pokeElemOffAsMulti (Ptr a#) i x = writeOffAddrAsMulti (Addr a#) i x
+
+prefetchPtrData :: Ptr a -> Int -> Ptr a
+{-# INLINE prefetchPtrData #-}
+prefetchPtrData (Ptr addr#) (I# i#) = Ptr (prefetchAddr# addr# i#)
+
+prefetchForeignPtrData :: ForeignPtr a -> Int -> ForeignPtr a
+{-# INLINE prefetchForeignPtrData #-}
+prefetchForeignPtrData (ForeignPtr addr# fpc) (I# i#) = ForeignPtr (prefetchAddr# addr# i#) fpc
+
+prefetchByteArrayData :: ByteArray -> Int -> ByteArray
+{-# INLINE prefetchByteArrayData #-}
+prefetchByteArrayData (ByteArray arr#) (I# i#) = ByteArray (prefetchByteArray# arr# i#)
 #endif /* defined(__GLASGOW_HASKELL_LLVM__) */
