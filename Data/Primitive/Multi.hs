@@ -57,6 +57,9 @@ class MultiType a where
     -- | The number of elements of type @a@ in a @Multi a@.
     multiplicity :: Multi a -> Int
 
+    -- | A @Multi a@ containing the values @0@, @1@, ..., @multiplicity - 1@.
+    multienum :: Multi a
+
     -- | Replicate a scalar across a @Multi a@.
     multireplicate :: a -> Multi a
 
@@ -73,6 +76,8 @@ instance MultiType a => MultiType (a, a) where
     data Multi (a, a) = M_2 !(Multi a) !(Multi a)
 
     multiplicity _ = multiplicity (undefined :: Multi a)
+
+    multienum = M_2 multienum multienum
 
     multireplicate (x, y) = M_2 (multireplicate x) (multireplicate y)
 
@@ -133,6 +138,8 @@ deriveMultiPrim(Float, MultiFloat, FloatX4, FX4#,
                 indexFloatOffAddrAsFloatX4#,
                 readFloatOffAddrAsFloatX4#,
                 writeFloatOffAddrAsFloatX4#)
+; multienum =
+    MultiFloat (FX4# (packFloatX4# 0.0# 1.0# 2.0# 3.0#))
 ; multireplicate (F# x#) =
     MultiFloat (FX4# (packFloatX4# x# x# x# x#))
 ; multimap f (MultiFloat (FX4# v#)) =
@@ -167,6 +174,8 @@ deriveMultiPrim(Double, MultiDouble, DoubleX2, DX2#,
                 indexDoubleOffAddrAsDoubleX2#,
                 readDoubleOffAddrAsDoubleX2#,
                 writeDoubleOffAddrAsDoubleX2#)
+; multienum =
+    MultiDouble (DX2# (packDoubleX2# 0.0## 1.0##))
 ; multireplicate (D# x#) =
     MultiDouble (DX2# (packDoubleX2# x# x#))
 ; multimap f (MultiDouble (DX2# v#)) =
@@ -197,6 +206,8 @@ deriveMultiPrim(Int32, MultiInt32, Int32X4, I32X4#,
                 indexInt32OffAddrAsInt32X4#,
                 readInt32OffAddrAsInt32X4#,
                 writeInt32OffAddrAsInt32X4#)
+; multienum =
+    MultiInt32 (I32X4# (packInt32X4# 0# 1# 2# 3#))
 ; multireplicate (I32# x#) =
     MultiInt32 (I32X4# (packInt32X4# x# x# x# x#))
 ; multimap f (MultiInt32 (I32X4# v#)) =
@@ -231,6 +242,8 @@ deriveMultiPrim(Int64, MultiInt64, Int64X2, I64X2#,
                 indexInt64OffAddrAsInt64X2#,
                 readInt64OffAddrAsInt64X2#,
                 writeInt64OffAddrAsInt64X2#)
+; multienum =
+    MultiInt64 (I64X2# (packInt64X2# 0# 1#))
 ; multireplicate (I64# x#) =
     MultiInt64 (I64X2# (packInt64X2# x# x#))
 ; multimap f (MultiInt64 (I64X2# v#)) =
@@ -262,6 +275,8 @@ deriveMultiPrim(Int, MultiInt, Int32X4, I32X4#,
                 indexInt32OffAddrAsInt32X4#,
                 readInt32OffAddrAsInt32X4#,
                 writeInt32OffAddrAsInt32X4#)
+; multienum =
+    MultiInt (I32X4# (packInt32X4# 0# 1# 2# 3#))
 ; multireplicate (I# x#) =
     MultiInt (I32X4# (packInt32X4# x# x# x# x#))
 ; multimap f (MultiInt (I32X4# v#)) =
@@ -296,6 +311,8 @@ deriveMultiPrim(Int, MultiInt, Int64X2, I64X2#,
                 indexInt64OffAddrAsInt64X2#,
                 readInt64OffAddrAsInt64X2#,
                 writeInt64OffAddrAsInt64X2#)
+; multienum =
+    MultiInt (I64X2# (packInt64X2# 0# 1#))
 ; multireplicate (I# x#) =
     MultiInt (I64X2# (packInt64X2# x# x#))
 ; multimap f (MultiInt (I64X2# v#)) =
