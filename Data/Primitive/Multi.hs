@@ -81,6 +81,15 @@ instance MultiType a => MultiType (a, a) where
 
     multireplicate (x, y) = M_2 (multireplicate x) (multireplicate y)
 
+instance MultiType a => MultiType (a, a, a) where
+    data Multi (a, a, a) = M_3 !(Multi a) !(Multi a) !(Multi a)
+
+    multiplicity _ = multiplicity (undefined :: Multi a)
+
+    multienum = M_3 multienum multienum multienum
+
+    multireplicate (x, y, z) = M_3 (multireplicate x) (multireplicate y) (multireplicate z)
+
 muncurry :: (Multi a -> Multi a -> b)
          -> (Multi (a, a) -> b)
 muncurry f (M_2 x y) = f x y
