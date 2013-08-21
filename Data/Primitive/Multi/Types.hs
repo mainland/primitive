@@ -34,7 +34,7 @@ mapFloatX4 f (FX4# x#) =
         !(F# b'#)             = f (F# b#)
         !(F# c'#)             = f (F# c#)
         !(F# d'#)             = f (F# d#)
-        !fx#                  = packFloatX4# a'# b'# c'# d'#
+        !fx#                  = packFloatX4# (# a'#, b'#, c'#, d'# #)
     in
       FX4# fx#
 
@@ -60,7 +60,7 @@ instance Num FloatX4 where
 
     fromInteger i =
         let !(F# f#) = fromInteger i
-            v#       = packFloatX4# f# f# f# f#
+            v#       = packFloatX4# (# f#, f#, f#, f# #)
         in
           FX4# v#
 
@@ -97,7 +97,7 @@ mapDoubleX2 f (DX2# x#) =
     let !(# a#, b# #) = unpackDoubleX2# x#
         !(D# a'#)     = f (D# a#)
         !(D# b'#)     = f (D# b#)
-        !fx#          = packDoubleX2# a'# b'#
+        !fx#          = packDoubleX2# (# a'#,  b'# #)
     in
       DX2# fx#
 
@@ -123,7 +123,7 @@ instance Num DoubleX2 where
 
     fromInteger i =
         let !(D# f#) = fromInteger i
-            v#       = packDoubleX2# f# f#
+            v#       = packDoubleX2# (# f#, f# #)
         in
           DX2# v#
 
@@ -162,7 +162,7 @@ mapInt32X4 f (I32X4# x#) =
         !(I32# b'#)           = f (I32# b#)
         !(I32# c'#)           = f (I32# c#)
         !(I32# d'#)           = f (I32# d#)
-        !fx#                  = packInt32X4# a'# b'# c'# d'#
+        !fx#                  = packInt32X4# (# a'#, b'#, c'#, d'# #)
     in
       I32X4# fx#
 
@@ -188,7 +188,7 @@ instance Num Int32X4 where
 
     fromInteger i =
         let !(I32# n#) = fromInteger i
-            v#         = packInt32X4# n# n# n# n#
+            v#         = packInt32X4# (# n#, n#, n#, n# #)
         in
           I32X4# v#
 
@@ -225,7 +225,7 @@ mapInt64X2 f (I64X2# x#) =
     let !(# a#, b# #) = unpackInt64X2# x#
         !(I64# a'#)   = f (I64# a#)
         !(I64# b'#)   = f (I64# b#)
-        !fx#          = packInt64X2# a'# b'#
+        !fx#          = packInt64X2# (# a'#, b'# #)
     in
       I64X2# fx#
 
@@ -251,7 +251,7 @@ instance Num Int64X2 where
 
     fromInteger i =
         let !(I64# n#) = fromInteger i
-            v#         = packInt64X2# n# n#
+            v#         = packInt64X2# (# n#, n# #)
         in
           I64X2# v#
 

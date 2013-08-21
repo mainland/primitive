@@ -148,16 +148,16 @@ deriveMultiPrim(Float, MultiFloat, FloatX4, FX4#,
                 readFloatOffAddrAsFloatX4#,
                 writeFloatOffAddrAsFloatX4#)
 ; multienum =
-    MultiFloat (FX4# (packFloatX4# 0.0# 1.0# 2.0# 3.0#))
+    MultiFloat (FX4# (packFloatX4# (# 0.0#, 1.0#, 2.0#, 3.0# #)))
 ; multireplicate (F# x#) =
-    MultiFloat (FX4# (packFloatX4# x# x# x# x#))
+    MultiFloat (FX4# (packFloatX4# (# x#, x#, x#, x# #)))
 ; multimap f (MultiFloat (FX4# v#)) =
     let !(# w#, x#, y#, z# #) = unpackFloatX4# v#
         !(F# w'#)             = f (F# w#)
         !(F# x'#)             = f (F# x#)
         !(F# y'#)             = f (F# y#)
         !(F# z'#)             = f (F# z#)
-        !v'#                  = packFloatX4# w'# x'# y'# z'#
+        !v'#                  = packFloatX4# (# w'#, x'#, y'#, z'# #)
     in
       MultiFloat (FX4# v'#)
 ; multifold f z (MultiFloat (FX4# v#)) =
@@ -171,7 +171,7 @@ deriveMultiPrim(Float, MultiFloat, FloatX4, FX4#,
         !(F# x'#)                 = f (F# x1#) (F# x2#)
         !(F# y'#)                 = f (F# y1#) (F# y2#)
         !(F# z'#)                 = f (F# z1#) (F# z2#)
-        !v'#                      = packFloatX4# w'# x'# y'# z'#
+        !v'#                      = packFloatX4# (# w'#, x'#, y'#, z'# #)
     in
       MultiFloat (FX4# v'#)
 }
@@ -184,14 +184,14 @@ deriveMultiPrim(Double, MultiDouble, DoubleX2, DX2#,
                 readDoubleOffAddrAsDoubleX2#,
                 writeDoubleOffAddrAsDoubleX2#)
 ; multienum =
-    MultiDouble (DX2# (packDoubleX2# 0.0## 1.0##))
+    MultiDouble (DX2# (packDoubleX2# (# 0.0##, 1.0## #)))
 ; multireplicate (D# x#) =
-    MultiDouble (DX2# (packDoubleX2# x# x#))
+    MultiDouble (DX2# (packDoubleX2# (# x#, x# #)))
 ; multimap f (MultiDouble (DX2# v#)) =
     let !(# x#, y# #) = unpackDoubleX2# v#
         !(D# x'#)             = f (D# x#)
         !(D# y'#)             = f (D# y#)
-        !v'#                  = packDoubleX2# x'# y'#
+        !v'#                  = packDoubleX2# (# x'#, y'# #)
     in
       MultiDouble (DX2# v'#)
 ; multifold f z (MultiDouble (DX2# v#)) =
@@ -203,7 +203,7 @@ deriveMultiPrim(Double, MultiDouble, DoubleX2, DX2#,
         !(# w2#, x2# #) = unpackDoubleX2# v2#
         !(D# w'#)       = f (D# w1#) (D# w2#)
         !(D# x'#)       = f (D# x1#) (D# x2#)
-        !v'#            = packDoubleX2# w'# x'#
+        !v'#            = packDoubleX2# (# w'#, x'# #)
     in
       MultiDouble (DX2# v'#)
 }
@@ -216,16 +216,16 @@ deriveMultiPrim(Int32, MultiInt32, Int32X4, I32X4#,
                 readInt32OffAddrAsInt32X4#,
                 writeInt32OffAddrAsInt32X4#)
 ; multienum =
-    MultiInt32 (I32X4# (packInt32X4# 0# 1# 2# 3#))
+    MultiInt32 (I32X4# (packInt32X4# (# 0#, 1#, 2#, 3# #)))
 ; multireplicate (I32# x#) =
-    MultiInt32 (I32X4# (packInt32X4# x# x# x# x#))
+    MultiInt32 (I32X4# (packInt32X4# (# x#, x#, x#, x# #)))
 ; multimap f (MultiInt32 (I32X4# v#)) =
     let !(# w#, x#, y#, z# #) = unpackInt32X4# v#
         !(I32# w'#)           = f (I32# w#)
         !(I32# x'#)           = f (I32# x#)
         !(I32# y'#)           = f (I32# y#)
         !(I32# z'#)           = f (I32# z#)
-        !v'#                  = packInt32X4# w'# x'# y'# z'#
+        !v'#                  = packInt32X4# (# w'#, x'#, y'#, z'# #)
     in
       MultiInt32 (I32X4# v'#)
 ; multifold f z (MultiInt32 (I32X4# v#)) =
@@ -239,7 +239,7 @@ deriveMultiPrim(Int32, MultiInt32, Int32X4, I32X4#,
         !(I32# x'#)               = f (I32# x1#) (I32# x2#)
         !(I32# y'#)               = f (I32# y1#) (I32# y2#)
         !(I32# z'#)               = f (I32# z1#) (I32# z2#)
-        !v'#                      = packInt32X4# w'# x'# y'# z'#
+        !v'#                      = packInt32X4# (# w'#, x'#, y'#, z'# #)
     in
       MultiInt32 (I32X4# v'#)
 }
@@ -252,14 +252,14 @@ deriveMultiPrim(Int64, MultiInt64, Int64X2, I64X2#,
                 readInt64OffAddrAsInt64X2#,
                 writeInt64OffAddrAsInt64X2#)
 ; multienum =
-    MultiInt64 (I64X2# (packInt64X2# 0# 1#))
+    MultiInt64 (I64X2# (packInt64X2# (# 0#, 1# #)))
 ; multireplicate (I64# x#) =
-    MultiInt64 (I64X2# (packInt64X2# x# x#))
+    MultiInt64 (I64X2# (packInt64X2# (# x#, x# #)))
 ; multimap f (MultiInt64 (I64X2# v#)) =
     let !(# x#, y# #) = unpackInt64X2# v#
         !(I64# x'#)   = f (I64# x#)
         !(I64# y'#)   = f (I64# y#)
-        !v'#          = packInt64X2# x'# y'#
+        !v'#          = packInt64X2# (# x'#, y'# #)
     in
       MultiInt64 (I64X2# v'#)
 ; multifold f z (MultiInt64 (I64X2# v#)) =
@@ -271,7 +271,7 @@ deriveMultiPrim(Int64, MultiInt64, Int64X2, I64X2#,
         !(# w2#, x2# #) = unpackInt64X2# v2#
         !(I64# w'#)     = f (I64# w1#) (I64# w2#)
         !(I64# x'#)     = f (I64# x1#) (I64# x2#)
-        !v'#            = packInt64X2# w'# x'#
+        !v'#            = packInt64X2# (# w'#, x'# #)
     in
       MultiInt64 (I64X2# v'#)
 }
@@ -285,16 +285,16 @@ deriveMultiPrim(Int, MultiInt, Int32X4, I32X4#,
                 readInt32OffAddrAsInt32X4#,
                 writeInt32OffAddrAsInt32X4#)
 ; multienum =
-    MultiInt (I32X4# (packInt32X4# 0# 1# 2# 3#))
+    MultiInt (I32X4# (packInt32X4# (# 0#, 1#, 2#, 3# #)))
 ; multireplicate (I# x#) =
-    MultiInt (I32X4# (packInt32X4# x# x# x# x#))
+    MultiInt (I32X4# (packInt32X4# (# x#, x#, x#, x# #)))
 ; multimap f (MultiInt (I32X4# v#)) =
     let !(# w#, x#, y#, z# #) = unpackInt32X4# v#
         !(I# w'#)             = f (I# w#)
         !(I# x'#)             = f (I# x#)
         !(I# y'#)             = f (I# y#)
         !(I# z'#)             = f (I# z#)
-        !v'#                  = packInt32X4# w'# x'# y'# z'#
+        !v'#                  = packInt32X4# (# w'#, x'#, y'#, z'# #)
     in
       MultiInt (I32X4# v'#)
 ; multifold f z (MultiInt (I32X4# v#)) =
@@ -308,7 +308,7 @@ deriveMultiPrim(Int, MultiInt, Int32X4, I32X4#,
         !(I# x'#)                 = f (I# x1#) (I# x2#)
         !(I# y'#)                 = f (I# y1#) (I# y2#)
         !(I# z'#)                 = f (I# z1#) (I# z2#)
-        !v'#                      = packInt32X4# w'# x'# y'# z'#
+        !v'#                      = packInt32X4# (# w'#, x'#, y'#, z'# #)
     in
       MultiInt (I32X4# v'#)
 }
@@ -321,14 +321,14 @@ deriveMultiPrim(Int, MultiInt, Int64X2, I64X2#,
                 readInt64OffAddrAsInt64X2#,
                 writeInt64OffAddrAsInt64X2#)
 ; multienum =
-    MultiInt (I64X2# (packInt64X2# 0# 1#))
+    MultiInt (I64X2# (packInt64X2# (# 0#, 1# #)))
 ; multireplicate (I# x#) =
-    MultiInt (I64X2# (packInt64X2# x# x#))
+    MultiInt (I64X2# (packInt64X2# (# x#, x# #)))
 ; multimap f (MultiInt (I64X2# v#)) =
     let !(# x#, y# #) = unpackInt64X2# v#
         !(I# x'#)     = f (I# x#)
         !(I# y'#)     = f (I# y#)
-        !v'#          = packInt64X2# x'# y'#
+        !v'#          = packInt64X2# (# x'#, y'# #)
     in
       MultiInt (I64X2# v'#)
 ; multifold f z (MultiInt (I64X2# v#)) =
@@ -340,7 +340,7 @@ deriveMultiPrim(Int, MultiInt, Int64X2, I64X2#,
         !(# w2#, x2# #) = unpackInt64X2# v2#
         !(I# w'#)       = f (I# w1#) (I# w2#)
         !(I# x'#)       = f (I# x1#) (I# x2#)
-        !v'#            = packInt64X2# w'# x'#
+        !v'#            = packInt64X2# (# w'#, x'# #)
     in
       MultiInt (I64X2# v'#)
 }
