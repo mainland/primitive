@@ -23,7 +23,7 @@ import Data.Primitive.Internal.Operations
 
 import GHC.Base (
     unsafeCoerce#,
-    Int(..), Char(..),
+    Int(..), Char(..), isTrue#
   )
 import GHC.Float (
     Float(..), Double(..)
@@ -39,7 +39,6 @@ import GHC.Prim
 #if __GLASGOW_HASKELL__ >= 706
     hiding (setByteArray#)
 #endif
-import GHC.PrimWrappers
 
 import Data.Typeable ( Typeable )
 import Data.Data ( Data(..) )
@@ -49,14 +48,14 @@ import Data.Primitive.Internal.Compat ( mkNoRepType )
 data Addr = Addr Addr# deriving ( Typeable )
 
 instance Eq Addr where
-  Addr a# == Addr b# = eqAddr# a# b#
-  Addr a# /= Addr b# = neAddr# a# b#
+  Addr a# == Addr b# = isTrue# (eqAddr# a# b#)
+  Addr a# /= Addr b# = isTrue# (neAddr# a# b#)
 
 instance Ord Addr where
-  Addr a# > Addr b# = gtAddr# a# b#
-  Addr a# >= Addr b# = geAddr# a# b#
-  Addr a# < Addr b# = ltAddr# a# b#
-  Addr a# <= Addr b# = leAddr# a# b#
+  Addr a# >  Addr b# = isTrue# (gtAddr# a# b#)
+  Addr a# >= Addr b# = isTrue# (geAddr# a# b#)
+  Addr a# <  Addr b# = isTrue# (ltAddr# a# b#)
+  Addr a# <= Addr b# = isTrue# (leAddr# a# b#)
 
 instance Data Addr where
   toConstr _ = error "toConstr"
